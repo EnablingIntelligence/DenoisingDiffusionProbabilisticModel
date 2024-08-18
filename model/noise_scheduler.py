@@ -4,12 +4,13 @@ from typing import Tuple
 
 class LinearNoiseScheduler:
 
-    def __init__(self, n_time_steps: int, beta_start: float, beta_end: float):
-        self.betas = torch.linspace(beta_start, beta_end, n_time_steps)
-        self.alphas = 1 - self.betas
-        self.alpha_cum_prod = self.alphas.cumprod(dim=0)
-        self.sqrt_alpha_cum_prod = torch.sqrt(self.alpha_cum_prod)
-        self.sqrt_one_minus_alpha_cum_prod = torch.sqrt(1 - self.alpha_cum_prod)
+    def __init__(self, n_time_steps: int, beta_start: float, beta_end: float, device: torch.device):
+        self.device = device
+        self.betas = torch.linspace(beta_start, beta_end, n_time_steps).to(device)
+        self.alphas = (1 - self.betas).to(device)
+        self.alpha_cum_prod = self.alphas.cumprod(dim=0).to(device)
+        self.sqrt_alpha_cum_prod = torch.sqrt(self.alpha_cum_prod).to(device)
+        self.sqrt_one_minus_alpha_cum_prod = torch.sqrt(1 - self.alpha_cum_prod).to(device)
 
     def forward(self, image: torch.Tensor, noise: torch.Tensor, t: int) -> torch.Tensor:
         batch_size = image.shape[0]
@@ -35,5 +36,5 @@ class LinearNoiseScheduler:
         else:
             variance = ((1 - self.alpha_cum_prod[t-1]) / (1 - self.alpha_cum_prod[t])) * self.betas[t]
             sigma = torch.sqrt(variance)
-            z = torch.randn(image.shape).to(image.device)
-            return image + sigma * z, mean
+            z = torch.randn(image.shape).to(self.device)
+            return image, mean + sigma * z
