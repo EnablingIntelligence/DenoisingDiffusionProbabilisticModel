@@ -24,7 +24,8 @@ class LinearNoiseScheduler:
 
         return image * batched_sqrt_alpha_cum_prod + noise * batched_sqrt_one_minus_alpha_cum_prod
 
-    def backward_sample(self, noise_image: torch.Tensor, noise_pred: torch.Tensor, t: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    def backward_sample(self, noise_image: torch.Tensor, noise_pred: torch.Tensor, t: int)\
+            -> Tuple[torch.Tensor, torch.Tensor]:
         image = (noise_image - (self.sqrt_one_minus_alpha_cum_prod[t] * noise_pred)) / self.sqrt_alpha_cum_prod[t]
         image = image.clamp(-1, 1)
 
@@ -33,8 +34,8 @@ class LinearNoiseScheduler:
 
         if t == 0:
             return image, mean
-        else:
-            variance = ((1 - self.alpha_cum_prod[t-1]) / (1 - self.alpha_cum_prod[t])) * self.betas[t]
-            sigma = torch.sqrt(variance)
-            z = torch.randn(image.shape).to(self.device)
-            return image, mean + sigma * z
+
+        variance = ((1 - self.alpha_cum_prod[t - 1]) / (1 - self.alpha_cum_prod[t])) * self.betas[t]
+        sigma = torch.sqrt(variance)
+        z = torch.randn(image.shape).to(self.device)
+        return image, mean + sigma * z
