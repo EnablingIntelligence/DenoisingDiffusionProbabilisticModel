@@ -32,9 +32,8 @@ def get_mnist_loader(
         val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
         return train_loader, val_loader
 
-    else:
-        test_dataset = MNIST(data_path, train=False, transform=transform, download=True)
-        return DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+    test_dataset = MNIST(data_path, train=False, transform=transform, download=True)
+    return DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
 
 def get_cifar10_loader(
@@ -64,7 +63,5 @@ def get_cifar10_loader(
         val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
         return train_loader, val_loader
 
-    else:
-        test_dataset = CIFAR10(data_path, train=False, transform=transform, download=True)
-        return DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers
-                          )
+    test_dataset = CIFAR10(data_path, train=False, transform=transform, download=True)
+    return DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
