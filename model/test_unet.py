@@ -22,11 +22,11 @@ class TestUNet(unittest.TestCase):
         )
         unet = UNet(config)
 
-        x = torch.randn(1, 3, 256, 256)
-        embeddings = torch.randn(1, 128)
-        y = unet(x, embeddings)
+        x = torch.randn(16, 3, 256, 256)
+        time_steps = torch.randint(0, 10, (16,))
+        y = unet(x, time_steps)
 
-        self.assertEquals(y.shape, (1, 3, 256, 256))
+        self.assertEquals(y.shape, (16, 3, 256, 256))
 
 
 if __name__ == '__main__':

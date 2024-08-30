@@ -69,7 +69,7 @@ class UNet(nn.Module):
     def forward(self, x: torch.Tensor, time_embedding: torch.Tensor) -> torch.Tensor:
         x = self.conv_input(x)
 
-        embedding = self.embedding(time_embedding)
+        embedding = self.embedding(torch.as_tensor(time_embedding).long())
         embedding = self.embedding_proj(embedding)
 
         encoder_outs = []
