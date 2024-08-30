@@ -37,7 +37,7 @@ class UNet(nn.Module):
         self.conv_input = nn.Conv2d(in_channels=config.in_channels, out_channels=config.encoder_channels[0],
                                     kernel_size=3, padding=1)
 
-        self.up_sample = list(reversed(self.encoder_down_sample))
+        self.up_sample = list(reversed(config.encoder_down_sample))
         self.encoder = nn.ModuleList([])
         for block_idx in range(len(config.encoder_channels) - 1):
             self.encoder.append(Encoder(in_channels=config.encoder_channels[block_idx],

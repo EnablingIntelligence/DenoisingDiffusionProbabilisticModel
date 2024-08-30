@@ -12,7 +12,7 @@ class TimeEmbedding(nn.Module):
     @torch.no_grad()
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         exponents = (
-                torch.arange(0, self.half_embedding_dim, dtype=torch.float32) / self.halv_embedding_dim
+                torch.arange(0, self.half_embedding_dim, dtype=torch.float32) / self.half_embedding_dim
         ).to(x.device)
         factors = 10_000 ** exponents
 
